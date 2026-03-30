@@ -229,7 +229,6 @@
   </div>
   <div id="hoverHint">WASD / 方向键移动 · 空格射击</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@chenglou/pretext@0.0.3/dist/layout.js"></script>
   <script>
   // ================================================================
   // 坦克大战 - Tank Battle Game
@@ -237,7 +236,7 @@
   // Uses @chenglou/pretext for text measurement
   // ================================================================
 
-  const { prepare, prepareWithSegments, layout, layoutWithLines } = window.Pretext;
+  // Text measurement using Canvas measureText (works without external dependencies)
 
   const canvas = document.getElementById('game');
   const ctx = canvas.getContext('2d');
@@ -287,12 +286,13 @@
   resizeCanvas();
 
   // ================================================================
-  // PRETEXT HELPER: Measure text with Pretext for precise layout
+  // TEXT MEASUREMENT: Canvas measureText for pixel-perfect layout
   // ================================================================
   function measureText(text, fontSize, bold = false) {
     const font = `${bold ? 'bold ' : ''}${fontSize}px -apple-system, BlinkMacSystemFont, sans-serif`;
-    const prepared = prepare(text, font);
-    return layout(prepared, Infinity, fontSize * 1.3);
+    ctx.font = font;
+    const width = ctx.measureText(text).width;
+    return { width };
   }
 
   function drawText(text, x, y, fontSize, color, align = 'left') {
@@ -525,10 +525,10 @@
       ctx.globalAlpha = p;
       const txt = `第 ${waveNum} 波`;
       const font = `bold 28px -apple-system, BlinkMacSystemFont, sans-serif`;
-      const prepared = prepare(txt, font);
-      const { width } = layout(prepared, Infinity, 36);
+      ctx.font = font;
+      const { width: announceW } = measureText(txt, 28, true);
       ctx.fillStyle = 'rgba(0,0,0,0.5)';
-      ctx.fillRect(GAME_W/2 - width/2 - 16, GAME_H/2 - 22, width + 32, 44);
+      ctx.fillRect(GAME_W/2 - announceW/2 - 16, GAME_H/2 - 22, announceW + 32, 44);
       ctx.font = font;
       ctx.fillStyle = '#ef4444';
       ctx.textAlign = 'center';
