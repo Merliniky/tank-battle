@@ -413,10 +413,11 @@
     getDX() { return [0, this.speed, 0, -this.speed][this.dir]; }
     getDY() { return [-this.speed, 0, this.speed, 0][this.dir]; }
     canMove(x, y, map) {
+      const HUD = 38;
       const corners = [[x+4,y+4],[x+this.size-4,y+4],[x+4,y+this.size-4],[x+this.size-4,y+this.size-4]];
       for (const [cx,cy] of corners) {
         const tx = Math.floor(cx / TILE);
-        const ty = Math.floor(cy / TILE);
+        const ty = Math.floor((cy - HUD) / TILE);
         if (ty < 0 || ty >= map.length || tx < 0 || tx >= map[0].length) return false;
         const t = map[ty][tx];
         if (t === 1 || t === 2) return false;
