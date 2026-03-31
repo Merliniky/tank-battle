@@ -266,7 +266,7 @@
   const GAME_H = 560;
   const TILE = 32;
   const COLS = Math.floor(GAME_W / TILE); // 12.5 → 12
-  const ROWS = Math.floor((GAME_H - 60) / TILE); // rows for map
+  const ROWS = Math.floor((GAME_H - 38) / TILE); // rows for map (16 rows, y=38 to y=550)
 
   function resizeCanvas() {
     const maxW = window.innerWidth - 16;
@@ -753,7 +753,7 @@
           if (player.health <= 0) {
             lives--;
             if (lives <= 0) { gameState = 'gameover'; showOverlay('gameover'); }
-            else { player.health = 3; player.x = GAME_W/2-14; player.y = GAME_H - 50; player.invincible = 120; }
+            else { player.health = 3; player.x = GAME_W/2-14; player.y = 486; player.invincible = 120; }
           }
         }
       }
@@ -795,7 +795,7 @@
     gameState = 'playing';
     score = 0; lives = 3; wave = 1; gameTime = 0;
     map = generateMap();
-    player = new Tank(GAME_W/2 - 14, GAME_H - 50, true);
+    player = new Tank(GAME_W/2 - 14, 486, true);
     enemies = []; bullets = []; explosions = [];
     overlay.classList.add('hidden');
     spawnWave(3);
