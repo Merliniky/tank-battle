@@ -403,7 +403,7 @@
         this.x = nx; this.y = ny;
       }
       // Clamp to map boundaries (accounting for HUD offset and border walls)
-      const mapBottom = (rows - 1) * TILE + 38 - this.size + 2;
+      const mapBottom = (map.length - 1) * TILE + 38 - this.size + 2;
       this.x = Math.max(TILE, Math.min(GAME_W - TILE - this.size, this.x));
       this.y = Math.max(TILE + 40, Math.min(mapBottom, this.y));
     }
@@ -543,18 +543,17 @@
 
   // Map generation
   function generateMap() {
-    const rows = Math.floor((GAME_H - 40) / TILE);
-    const map = Array(rows).fill(null).map(() => Array(COLS).fill(0));
+    const map = Array(ROWS).fill(null).map(() => Array(COLS).fill(0));
 
     // Border
-    for (let c = 0; c < COLS; c++) { map[0][c] = 1; map[rows-1][c] = 1; }
-    for (let r = 0; r < rows; r++) { map[r][0] = 1; map[r][COLS-1] = 1; }
+    for (let c = 0; c < COLS; c++) { map[0][c] = 1; map[ROWS-1][c] = 1; }
+    for (let r = 0; r < ROWS; r++) { map[r][0] = 1; map[r][COLS-1] = 1; }
 
     // Random obstacles (15% density, avoiding player spawn area)
-    for (let r = 2; r < rows - 4; r++) {
+    for (let r = 2; r < ROWS - 4; r++) {
       for (let c = 2; c < COLS - 2; c++) {
         // Keep player spawn area clear (bottom center, 4 tiles wide)
-        const isPlayerSpawnArea = r >= rows - 4 && c >= 4 && c <= COLS - 5;
+        const isPlayerSpawnArea = r >= ROWS - 4 && c >= 4 && c <= COLS - 5;
         if (!isPlayerSpawnArea && Math.random() < 0.15) {
           map[r][c] = Math.random() > 0.5 ? 1 : 2;
         }
