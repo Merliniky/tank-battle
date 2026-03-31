@@ -399,8 +399,11 @@
       if (this.invincible > 0) this.invincible--;
       const nx = this.x + this.getDX();
       const ny = this.y + this.getDY();
-      if (this.canMove(nx, ny, map)) {
-        this.x = nx; this.y = ny;
+      // Only check collision and move if actually trying to move somewhere
+      if (nx !== this.x || ny !== this.y) {
+        if (this.canMove(nx, ny, map)) {
+          this.x = nx; this.y = ny;
+        }
       }
       // Clamp to map boundaries (accounting for HUD offset and border walls)
       const mapBottom = (map.length - 1) * TILE + 38 - this.size + 2;
